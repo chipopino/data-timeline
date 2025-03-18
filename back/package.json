@@ -1,0 +1,36 @@
+{
+  "name": "data",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node -r tsconfig-paths/register src/main.ts",
+    "test": "npx ts-node -r tsconfig-paths/register src/methodes/csv.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/pg": "^8.11.11",
+    "bad-words": "^4.0.0",
+    "dotenv": "^16.4.7",
+    "express": "^5.0.1",
+    "fast-csv": "^5.0.2",
+    "luxon": "^3.5.0",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.3",
+    "tsconfig-paths": "^4.2.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/bad-words": "^3.0.3",
+    "@types/express": "^5.0.0",
+    "@types/luxon": "^3.4.2",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^22.13.5",
+    "@types/stack-trace": "^0.0.33",
+    "@types/stacktrace-js": "^0.0.33",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}

@@ -1,4 +1,13 @@
+# all
+
 **/.env
 **/dist
 **/package-lock.json
 **/node_modules
+**/.vscode
+
+# back
+
+**/uploads
+**/public
+
