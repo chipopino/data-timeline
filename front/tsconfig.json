@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist",
+    "target": "ES5",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": "./",
+    "paths": {
+      "src/*": [
+        "src/*"
+      ],
+      "components/*": [
+        "src/components/*"
+      ],
+      "methodes/*": [
+        "src/methodes/*"
+      ],
+      "shared/*": [
+        "src/shared/*"
+      ],
+    },
+    "jsx": "react", // Add this line
+    "resolveJsonModule": true // Optional: if you use JSON modules
+  },
+  "include": [
+    "src"
+  ]
+}
