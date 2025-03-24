@@ -43,5 +43,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "url-join": "^5.0.0"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0"
   }
 }

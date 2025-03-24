@@ -22,7 +22,9 @@
       "shared/*": [
         "src/shared/*"
       ],
-      
+      "types/*": [
+        "src/types/*"
+      ],
     },
     "jsx": "react",
     "resolveJsonModule": true

@@ -7,6 +7,10 @@ import { Btn } from './Btn'
 
 const root = ReactDOM.createRoot(document.getElementById("root")!);
 root.render(<div className='flex gap-4'>
-  <Btn>tt</Btn>
+  <Btn
+    onClick={() => console.log("TEST")}
+  >
+    TEST
+  </Btn>
 </div>)
 
