@@ -9,6 +9,8 @@ interface TimelineType {
     startDate: Date;
     endDate: Date;
     eventCount: number;
+    timeSpan: number;
+    daysPerEventDsp: number;
     className?: string;
 }
 
@@ -17,6 +19,8 @@ export function Timeline({
     startDate,
     endDate,
     eventCount,
+    timeSpan,
+    daysPerEventDsp,
     className
 }: TimelineType) {
 
@@ -24,29 +28,28 @@ export function Timeline({
 
     useEffect(() => {
         if (eventCount) {
-            
-            const timeSpan = differenceInDays(endDate, startDate);
-            const daysPerEventDsp = Math.ceil(timeSpan / eventCount);
             const dates: any = Array.from({ length: eventCount }, () => []);
-            
             for (let i in events) {
                 const date = new Date(events[i].date + '');
                 if (date >= startDate && date <= endDate) {
                     const diff = differenceInDays(date, startDate);
                     const fin = Math.floor(diff / daysPerEventDsp);
                     dates[fin].push(events[i]);
+                    dates[fin] = dates[fin].sort(
+                        (a: EventType, b: EventType) =>
+                            differenceInDays(b.date + '', a.date + '')
+                    );
                 }
             }
-
             setItems(dates);
         }
-    }, [eventCount])
+    }, [eventCount, startDate, endDate, timeSpan])
 
-    return <div className={cn(className, 'flex flex-col')}>
+    return <div className={cn(className, 'flex flex-col [&>*:not(:last-child)]:border-b')}>
         {items.map((e, i) =>
             <EventDsp
                 key={`key_timeline_events_${i}`}
-                className='w-full border-b h-full'
+                className='w-full h-full'
                 events={e}
             />)}
     </div>

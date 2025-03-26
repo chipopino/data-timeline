@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Btn } from 'components/ui/buttons/btn/Btn';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { EventType } from 'types/interfaces';
@@ -24,6 +24,10 @@ export function EventDsp({ events, className }: EventsType) {
     function prevEvent() {
         !isFirstEvent && setIndex(old => old - 1)
     }
+
+    useEffect(() => {
+        setIndex(0);
+    }, [events])
 
     return <div className={cn(
         className,

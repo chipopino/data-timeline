@@ -6,24 +6,44 @@ import 'styles/theme.css';
 
 import renderDev from 'shared/renderDev';
 
+
 const mock = [
     [
         {
             "title": "Six-Day War",
-            "date": "1967-06-05",
-        }
-        ,
+            "date": "1967-06-05"
+        },
         {
             "title": "Declaration of the State of Israel",
-            "date": "1948-05-14",
+            "date": "1948-05-14"
         },
         {
-            "title": "made up event",
-            "date": "1948-05-13",
+            "title": "Yom Kippur War",
+            "date": "1973-10-06"
         },
         {
-            "title": "made up event 2",
-            "date": "1950-05-13",
+            "title": "The Camp David Accords",
+            "date": "1978-09-17"
+        },
+        {
+            "title": "Oslo Accords",
+            "date": "1993-09-13"
+        },
+        {
+            "title": "Prime Minister Yitzhak Rabin Assassination",
+            "date": "1995-11-04"
+        },
+        {
+            "title": "Gaza Disengagement Plan",
+            "date": "2005-08-15"
+        },
+        {
+            "title": "Operation Cast Lead",
+            "date": "2008-12-27"
+        },
+        {
+            "title": "Operation Protective Edge",
+            "date": "2014-07-08"
         }
     ],
     [
@@ -57,7 +77,7 @@ const mock = [
 renderDev(<Dealer
     eventDecks={mock}
     className={cn(
-        "w-full h-full flex",
-        'border [&>*:not(:first-child)]:border-l',
+        "w-full h-full",
+        '',
     )}
 />)
