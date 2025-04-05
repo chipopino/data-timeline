@@ -3,13 +3,13 @@ import { cn } from 'shared/methods';
 
 const ANIMATION_DURATION = 300;
 
-interface BtnProps {
+interface props {
     onClick?: () => void;
     children: React.ReactNode;
     className?: string;
 }
 
-export function Btn({ onClick, children, className }: BtnProps) {
+export function Btn({ onClick, children, className }: props) {
 
     return <button
         className={cn(className, 'cursor-pointer')}

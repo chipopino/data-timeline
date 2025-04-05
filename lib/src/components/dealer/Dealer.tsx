@@ -1,17 +1,20 @@
-import React, { useState, useEffect, useRef, ReactNode, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { addDays, differenceInDays } from "date-fns";
 import { Timeline } from 'components/timeline/Timeline';
+import { Chart } from 'components/chart/Chart';
 
 import { EVENT_HEIGHT } from 'shared/constants';
 import { EventType } from 'types/interfaces';
 import { cn } from 'src/shared/methods';
 
 interface DealerProps {
-    eventDecks: EventType[][];
+    timelines: EventType[][];
+    charts: { d: string, v: number }[][];
     className?: string;
 }
 interface InnerDealerProps {
-    eventDecks: EventType[][];
+    timelines: EventType[][];
+    charts: { d: string, v: number }[][];
     className?: string;
     height: number;
 }
@@ -45,22 +48,22 @@ export function Dealer(props: DealerProps) {
     </div>
 }
 
-function InnerDealer({ eventDecks, className, height }: InnerDealerProps) {
+function InnerDealer({ timelines, charts, className, height }: InnerDealerProps) {
 
     const mainRef = useRef<HTMLDivElement>(null);
 
     const [startDate, setStartDate] = useState<Date>(new Date("1948-01-01"));
-    const [endDate, setEndDate] = useState<Date>(new Date("1967-06-06"));
-
+    const [endDate, setEndDate] = useState<Date>(new Date("1999-06-06"));
     const timeSpan = differenceInDays(endDate, startDate);
+
     const eventCount = Math.ceil(height / EVENT_HEIGHT);
     const daysPerEventDsp = Math.ceil(timeSpan / eventCount) || 0;
 
     const wheelEvent = useCallback((event: WheelEvent) => {
         const movement = daysPerEventDsp;
         const delta = event.deltaY > 0 ? movement : -movement;
-        setStartDate((old) => addDays(old, -delta));
-        setEndDate((old) => addDays(old, event.shiftKey ? delta : -delta));
+        setStartDate((old) => addDays(old, event.shiftKey ? -delta : delta));
+        setEndDate((old) => addDays(old, delta));
     }, [daysPerEventDsp]);
 
     useEffect(() => {
@@ -77,9 +80,9 @@ function InnerDealer({ eventDecks, className, height }: InnerDealerProps) {
             'flex border [&>*:not(:first-child)]:border-l'
         )}
     >
-        {eventDecks.map((e, i) =>
+        {timelines.map((e, i) =>
             <Timeline
-                key={`key_eventDocks_28375623875_${i}`}
+                key={`key_timelines_28375623875_${i}`}
                 events={e}
                 startDate={startDate}
                 endDate={endDate}
@@ -87,6 +90,15 @@ function InnerDealer({ eventDecks, className, height }: InnerDealerProps) {
                 timeSpan={timeSpan}
                 daysPerEventDsp={daysPerEventDsp}
                 className={'w-full h-full'}
+            />
+        )}
+        {charts.map((e, i) =>
+            <Chart
+                key={`key_charts_29378569236593_${i}`}
+                startDate={startDate}
+                endDate={endDate}
+                data={e}
+                className="w-full h-full bg-secondary"
             />
         )}
     </div>

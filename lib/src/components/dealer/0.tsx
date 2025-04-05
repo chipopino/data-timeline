@@ -7,7 +7,7 @@ import 'styles/theme.css';
 import renderDev from 'shared/renderDev';
 
 
-const mock = [
+const timelinesMock = [
     [
         {
             "title": "Six-Day War",
@@ -74,10 +74,17 @@ const mock = [
     ],
 ]
 
+const chartsMock = [
+    [
+        { d: '1948-05-14', v: 0 },
+        { d: '1963-10-06', v: 10 },
+        { d: '1972-05-13', v: -5 },
+        { d: '1995-05-13', v: 0 },
+    ]
+]
+
 renderDev(<Dealer
-    eventDecks={mock}
-    className={cn(
-        "w-full h-full",
-        '',
-    )}
+    timelines={timelinesMock}
+    charts={chartsMock}
+    className={cn("w-full h-full")}
 />)

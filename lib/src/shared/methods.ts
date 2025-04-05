@@ -1,5 +1,6 @@
 import urlJoin from "url-join";
 import classNames from 'classnames';
+import { MOCK } from 'shared/constants';
 
 export function cn(...args: (string | undefined | null | false)[]): string {
     return classNames(...args);
@@ -10,25 +11,58 @@ export function isT() {
         return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     }
 }
-export async function fetchData(endpoint: string, mock: any, isError?: boolean, timeout?: number) {
-    return new Promise((resolve, reject) => {
-        if (process.env.DEV) {
+
+async function fetchWrapper(
+    callback: (res: any, rej: any) => void,
+    mock: any,
+) {
+    return new Promise((res, rej) => {
+        if (process.env.DEV && MOCK.USE_MOCK) {
             setTimeout(() => {
-                if (isError) {
-                    reject("mock error");
+                if (MOCK.IS_FETCH_ERROR) {
+                    rej("mock error");
                 } else {
-                    resolve(mock);
+                    res(mock);
                 }
-            }, timeout || 500)
+            }, MOCK.FETCH_TIMEOUT)
         } else {
-            fetch(urlJoin(process.env.FETCH_URL || '', endpoint))
-                .then(res => res.json())
-                .then(data => {
-                    resolve(data);
-                })
-                .catch(err => {
-                    reject(err);
-                })
+            callback(res, rej);
         }
     });
+};
+
+// TODO: get
+// export async function get(endpoint: string, mock: any) {
+
+//     function callback(res: any, rej: any) {
+//         fetch(urlJoin(process.env.FETCH_URL || '', endpoint))
+//             .then((res) => res.json())
+//             .then((data) => res(data))
+//             .catch((err) => rej(err));
+//     }
+
+//     return fetchWrapper(callback, mock);
+// };
+
+export async function post(endpoint: string, data: object, mock: any) {
+
+    function callback(res: any, rej: any) {
+        fetch(urlJoin(process.env.FETCH_URL || '', endpoint), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then((result) => {
+                if (!result.ok) {
+                    rej(`ERROR ${result.status}`);
+                }
+                return result.json();
+            })
+            .then((data) => res(data))
+            .catch((err) => rej(err));
+    }
+
+    return fetchWrapper(callback, mock);
 };
