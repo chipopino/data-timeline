@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { parse } from 'fast-csv';
-import logErr from '@/debug';
+import { Err } from '@/debug';
+import { ZodTypeAny } from 'zod';
 
 export default function extractCsv(fileName: string): Promise<any[]> {
     return new Promise((resolve, reject) => {
@@ -16,12 +17,16 @@ export default function extractCsv(fileName: string): Promise<any[]> {
                 rows.push(row);
             })
             .on('end', () => {
-                console.log(`Parsed ${rows.length} rows`);
                 resolve(rows);
             })
             .on('error', (err) => {
-                logErr('fs', [{ 'title': "error with createReadStream", 'msg': err }]);
-                reject(err);
+                reject(new Err('csvParse', err));
             });
     });
+}
+
+export function validateRows(rows: any, schema: ZodTypeAny) {
+    const r = schema.safeParse(rows);
+    if (!rows || !rows?.length) throw new Err('csvFormat');
+    if (!r.success) throw new Err('csvFormat');
 }
