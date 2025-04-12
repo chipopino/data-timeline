@@ -37,59 +37,6 @@ router.post(
   }
 );
 
-// router.post(
-//   t.uploadCsv.path,
-//   upload.single("file"),
-//   // @ts-ignore
-//   (req: t.treq_uploadCsv, res: t.tres_uploadCsv) => {
-//     if (!req.file) {
-//       res.status(500).json({ clientMsg: "File upload failed" });
-//       return;
-//     }
-//     extractCsv(req.file.path)
-//       .then(async (rows) => {
-//         const nonValueKeys = [
-//           "title",
-//           "description",
-//           "date format",
-//         ];
-
-//         const successful: string[] = [];
-//         const unsuccessful: { title: string; msg: string }[] = [];
-
-//         for (let i in rows) {
-//           const values: { date: string; value: string }[] = [];
-//           for (const k in rows[i]) {
-//             if (!nonValueKeys.includes(k)) {
-//               values.push({ date: k, value: rows[i][k] });
-//             }
-//           }
-
-//           try {
-//             await sql.postChart(
-//               rows[i]["title"],
-//               rows[i]["description"],
-//               rows[i]["date format"],
-//               values
-//             );
-//             successful.push(rows[i]["title"]);
-//           } catch (error4Client: any) {
-//             unsuccessful.push({ title: rows[i]["title"], msg: error4Client });
-//           }
-//         }
-
-//         res.json({
-//           successfulTitles: successful,
-//           unsuccessfulTitles: unsuccessful,
-//         });
-//       })
-//       .catch((err) => {
-//         logErr("express", [{ title: "could not upload file", msg: err }]);
-//         res.status(500).json({ clientMsg: "File upload failure" });
-//       });
-//   }
-// );
-
 router.post(
   t.uploadTimelineCsv.path,
   upload.single("file"),
@@ -147,6 +94,14 @@ router.post(
   }
 );
 
-
+router.post(
+  t.getChartTitles.path,
+  validateReq(t.getChartTitles.schema),
+  // @ts-ignore
+  async (req: t.treq_getChartTitles, res: t.tres_getChartTitles) => {
+    const titles = await sql.getChartTitles();
+    res.json(titles);
+  }
+);
 
 export default router;

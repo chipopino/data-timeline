@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "declaration": true,
     "outDir": "./dist",
     "target": "ES5",
@@ -8,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "src/*": [
         "src/*"
@@ -16,15 +17,21 @@
       "components/*": [
         "src/components/*"
       ],
-      "methodes/*": [
-        "src/methodes/*"
-      ],
       "shared/*": [
         "src/shared/*"
       ],
+      "types/*": [
+        "src/types/*"
+      ],
+      "hooks/*": [
+        "src/hooks/*"
+      ],
+      "requests/*": [
+        "src/requests/*"
+      ]
     },
-    "jsx": "react", // Add this line
-    "resolveJsonModule": true // Optional: if you use JSON modules
+    "jsx": "react",
+    "resolveJsonModule": true
   },
   "include": [
     "src"

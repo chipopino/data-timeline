@@ -10,7 +10,7 @@ export interface TypedReq<T> extends Request {
 //     json: Send<ResBody & { msg?: string }, this>;
 // }
 export interface TypedRes<ResBody> extends Response {
-    json: (body: ResBody & { msg?: string }) => this;
+    json: (body: ResBody & { clientMsg?: string }) => this;
 }
 
 export const test = {
@@ -38,7 +38,7 @@ export type tres_uploadCsv = TypedRes<{
     successfulTitles?: string[],
     unsuccessfulTitles?: { title: string, msg: string }[],
 }>
-export type treq_uploadCsv = TypedReq<z.infer<typeof test.schema>>;
+export type treq_uploadCsv = TypedReq<z.infer<typeof uploadCsv.schema>>;
 
 
 export const uploadTimelineCsv = {
@@ -46,4 +46,22 @@ export const uploadTimelineCsv = {
     schema: z.object({}),
 };
 export type tres_uploadTimelineCsv = TypedRes<{}>
-export type treq_uploadTimelineCsv = TypedReq<z.infer<typeof test.schema>>;
+export type treq_uploadTimelineCsv = TypedReq<z.infer<typeof uploadTimelineCsv.schema>>;
+
+
+export const uploadChartCsv = {
+    path: '/uploadChartCsv',
+    schema: z.object({}),
+};
+export type tres_uploadChartCsv = TypedRes<{}>
+export type treq_uploadChartCsv = TypedReq<z.infer<typeof uploadChartCsv.schema>>;
+
+
+export const getChartTitles = {
+    path: '/getChartTitles',
+    schema: z.object({}),
+};
+export type tres_getChartTitles = TypedRes<string[]>
+export type treq_getChartTitles = TypedReq<z.infer<typeof getChartTitles.schema>>;
+
+

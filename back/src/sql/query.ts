@@ -72,3 +72,16 @@ export async function postTimeline(
             JSON.stringify(events),
         ])
 }
+
+getChartTitles
+
+
+export async function getChartTitles(): Promise<string[]> {
+    const temp = await query(
+        `
+        SELECT title FROM charts
+        `,
+        []) as {title: string}[];
+    return temp.map(e=>e.title);
+}
+

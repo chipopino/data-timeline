@@ -33,7 +33,7 @@ type fetchState = 'idle' | 'loading' | 'success' | 'error';
 export function usePost() {
 
   const [state, setState] = useState<fetchState>('idle');
-
+  
   function Post(
     endpoint: string,
     data: object | File,

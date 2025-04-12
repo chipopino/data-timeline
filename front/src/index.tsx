@@ -1,16 +1,26 @@
-import React from "react";
-import { Button } from "@mui/material";
-import 'styles/root.css';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
-import { Event, Btn } from 'front-lib';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 
-import ReactDOM from "react-dom/client";
+const App = () => (
+  <Router>
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
+    </nav>
+    <Routes>
+      <Route path="/" element={<div>Home</div>} />
+      <Route path="/about" element={<div>About</div>} />
+      <Route path="*" element={<div>404</div>} />
+    </Routes>
+  </Router>
+);
 
-const root = ReactDOM.createRoot(document.getElementById("root")!);
-root.render(<div className='flex flex-col gap-8'>
-  <Button variant="contained" color="primary">
-    Hello MUI
-  </Button>
-  <Event />
-  <Btn>POOP</Btn>
-</div>);
+createRoot(document.getElementById('root')!).render(<App />);
+

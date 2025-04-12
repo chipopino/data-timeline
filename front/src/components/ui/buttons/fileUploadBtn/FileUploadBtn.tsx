@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { usePost } from 'hooks/useFetch';
 import { Btn } from 'components/ui/buttons/btn/Btn';
 
-import * as t from 'src/requests/root';
+import * as t from 'lib';
 import { Loader } from 'components/ui/loader/Loader';
 
 interface props {
