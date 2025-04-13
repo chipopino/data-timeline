@@ -6,17 +6,18 @@ export function isValidNumber(str: string) {
 }
 
 export function sortChartByDates(
-  items: { d: string, v: number }[],
-  dateFormat: string,
+  items: { d: string; v: number }[],
+  dateFormat: string
 ) {
-  let correctedValues = items.map(e => {
-    return { ...e, d: DateTime.fromFormat(e.d, dateFormat) }
+  const format = dateFormat.replace('mm', 'MM');
+  let correctedValues = items.map((e) => {
+    return { ...e, d: DateTime.fromFormat(e.d, format) };
   });
   correctedValues = correctedValues.sort((a, b) => {
-    return b.d.toMillis() - a.d.toMillis()
+    return b.d.toMillis() - a.d.toMillis();
   });
-  let fin = correctedValues.map(e => {
-    return { ...e, d: e.d.toISODate() }
-  })
-  return fin.filter(e => !!e.v).reverse();
+  let fin = correctedValues.map((e) => {
+    return { ...e, d: e.d.toISODate() };
+  });
+  return fin.filter((e) => !!e.v).reverse();
 }

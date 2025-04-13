@@ -12,7 +12,7 @@ const dev = {
     chart: 'chart/0.tsx',
     mainPage: 'pages/main/0.tsx',
     context: 'context/0.tsx',
-    select: 'modals/select/0.tsx',
+    selectModal: 'modals/select/0.tsx',
 }
 // change this to change what tou are working on
 const SELECTED = dev.mainPage;

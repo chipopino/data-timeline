@@ -1,5 +1,5 @@
 import { Router } from "express";
-import fs from 'fs';
+import fs from "fs";
 
 import validateReq from "@/middleware/validate";
 import multer from "multer";
@@ -11,7 +11,6 @@ import * as path from "path";
 import * as t from "front-lib";
 import * as c from "@/types/csvs";
 import * as sql from "@/sql/query";
-
 
 const router = Router();
 const upload = multer({
@@ -32,7 +31,7 @@ router.post(
   validateReq(t.testWithQuery.schema),
   // @ts-ignore
   async (req: t.treq_testWithQuery, res: t.tres_testWithQuery) => {
-    await sql.test();
+    console.log("TEST REQUEST");
     res.json({});
   }
 );
@@ -48,7 +47,7 @@ router.post(
     }
     extractCsv(req.file.path)
       .then(async (rows) => {
-        await sql.postTimeline(rows[0].a, rows[0].b.split(","), rows.slice(2));
+        await sql.postTimeline(rows[0].title, rows[0].date.split(","), rows.slice(2));
 
         res.json({});
       })
@@ -64,11 +63,9 @@ router.post(
   upload.single("file"),
   // @ts-ignore
   async (req: t.treq_uploadChartCsv, res: t.tres_uploadChartCsv) => {
-
-    const rows = await extractCsv(req.file?.path || '');
-    fs.unlinkSync(req.file?.path || '');
+    const rows = await extractCsv(req.file?.path || "");
+    fs.unlinkSync(req.file?.path || "");
     const data = rows.slice(1);
-
     validateRows(data, c.chart);
 
     const successfulRows: { d: string; v: number }[] = [];
@@ -83,14 +80,9 @@ router.post(
         unsuccessfulRows.push({ d: e.d, v: e.v });
       }
     });
-    await sql.postChart(
-      rows[0].d,
-      rows[0].v,
-      rows[0].f,
-      successfulRows
-    );
+    await sql.postChart(rows[0].d, rows[0].v, rows[0].f, successfulRows);
 
-    res.json({ clientMsg: 'Successfully uploaded chart' });
+    res.json({ clientMsg: "Successfully uploaded chart" });
   }
 );
 
@@ -103,5 +95,40 @@ router.post(
     res.json(titles);
   }
 );
+
+router.post(
+  t.getTimelineTitles.path,
+  validateReq(t.getTimelineTitles.schema),
+  // @ts-ignore
+  async (req: t.treq_getTimelineTitles, res: t.tres_getTimelineTitles) => {
+    const titles = await sql.getTimelineTitles();
+    res.json(titles);
+  }
+);
+
+
+router.post(
+  t.getChartByTitle.path,
+  validateReq(t.getChartByTitle.schema),
+  // @ts-ignore
+  async (req: t.treq_getChartByTitle, res: t.tres_getChartByTitle) => {
+    const { title } = req.body;
+    const chart = await sql.getChartByTitle(title);
+    res.json(chart);
+  }
+);
+
+router.post(
+  t.getTimelineByTitle.path,
+  validateReq(t.getTimelineByTitle.schema),
+  // @ts-ignore
+  async (req: t.treq_getTimelineByTitle, res: t.tres_getTimelineByTitle) => {
+    const { title } = req.body;
+    const timeline = await sql.getTimelineByTitle(title);
+    console.log("AAAAAAAAAA", timeline);
+    res.json(timeline);
+  }
+);
+
 
 export default router;
