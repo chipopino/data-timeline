@@ -12,14 +12,17 @@ export function isT() {
   }
 }
 
-async function fetchWrapper(callback: (res: any, rej: any) => void, mock: any) {
-  return new Promise((res, rej) => {
+async function fetchWrapper<T>(
+  callback: (res: (value: any) => void, rej: (reason?: any) => void) => void,
+  mock?: any
+): Promise<T> {
+  return new Promise<T>((res, rej) => {
     if (process.env.DEV && MOCK.USE_MOCK) {
       setTimeout(() => {
         if (MOCK.IS_FETCH_ERROR) {
           rej("mock error");
         } else {
-          res(mock);
+          res(mock || {});
         }
       }, MOCK.FETCH_TIMEOUT);
     } else {
@@ -41,8 +44,8 @@ async function fetchWrapper(callback: (res: any, rej: any) => void, mock: any) {
 //     return fetchWrapper(callback, mock);
 // };
 
-export async function post(endpoint: string, data: object, mock: any) {
-  function callback(res: any, rej: any) {
+export async function post<reqT, resT>(endpoint: string, data: reqT, mock?: reqT): Promise<resT> {
+  function callback(res: (value: any) => void, rej: (reason?: any) => void) {
     fetch(urlJoin(process.env.FETCH_URL || "", endpoint), {
       method: "POST",
       headers: {
@@ -54,32 +57,20 @@ export async function post(endpoint: string, data: object, mock: any) {
         try {
           const data = await result.json();
           if (!result.ok) {
-            // status != 200
-            if (data.clientMsg) {
-              // error with message to the client
-              rej(data.clientMsg);
-            } else {
-              // error without message to the client
-              rej("");
-            }
+            rej(data.clientMsg || "");
           } else {
-            // status = 200
             res(data);
           }
         } catch (err) {
-          // failed to parse json
-          // TODO: remove log
           console.log("ERROR 236523437: failed to parse json");
           rej("");
         }
       })
       .catch((err) => {
-        // network or other fetch-related errors
-        // TODO: remove log
         console.log("ERROR 132957617395627835:", err);
         rej("");
       });
   }
 
-  return fetchWrapper(callback, mock);
+  return fetchWrapper<resT>(callback, mock);
 }

@@ -4,19 +4,27 @@ import { Timeline } from "components/timeline/Timeline";
 import { Chart } from "components/chart/Chart";
 
 import { EVENT_HEIGHT } from "shared/constants";
-import { EventType } from "types/interfaces";
+import { timelineType, chartType } from "types/interfaces";
 import { cn } from "src/shared/methods";
 
 interface DealerProps {
-  timelines: EventType[][];
-  charts: { d: string; v: number }[][];
+  timelines: timelineType[];
+  charts: chartType[];
   className?: string;
+  startDate: Date
+  endDate: Date;
+  setStartDate: any;
+  setEndDate: any;
 }
 interface InnerDealerProps {
-  timelines: EventType[][];
-  charts: { d: string; v: number }[][];
+  timelines: timelineType[];
+  charts: chartType[];
   className?: string;
   height: number;
+  startDate: Date
+  endDate: Date;
+  setStartDate: any;
+  setEndDate: any;
 }
 
 export function Dealer(props: DealerProps) {
@@ -49,11 +57,15 @@ function InnerDealer({
   charts,
   className,
   height,
+  startDate,
+  endDate,
+  setStartDate,
+  setEndDate
 }: InnerDealerProps) {
   const mainRef = useRef<HTMLDivElement>(null);
 
-  const [startDate, setStartDate] = useState<Date>(new Date("1948-01-01"));
-  const [endDate, setEndDate] = useState<Date>(new Date("1999-06-06"));
+  //const [startDate, setStartDate] = useState<Date>(new Date("1948-01-01"));
+  //const [endDate, setEndDate] = useState<Date>(new Date("1999-06-06"));
   const timeSpan = differenceInDays(endDate, startDate);
 
   const eventCount = Math.ceil(height / EVENT_HEIGHT);
@@ -63,8 +75,8 @@ function InnerDealer({
     (event: WheelEvent) => {
       const movement = daysPerEventDsp;
       const delta = event.deltaY > 0 ? movement : -movement;
-      setStartDate((old) => addDays(old, event.shiftKey ? -delta : delta));
-      setEndDate((old) => addDays(old, delta));
+      setStartDate((old: any) => addDays(old, event.shiftKey ? -delta : delta));
+      setEndDate((old: any) => addDays(old, delta));
     },
     [daysPerEventDsp]
   );
@@ -84,7 +96,7 @@ function InnerDealer({
       {timelines.map((e, i) => (
         <Timeline
           key={`key_timelines_28375623875_${i}`}
-          events={e}
+          events={e.events}
           startDate={startDate}
           endDate={endDate}
           eventCount={eventCount}
@@ -98,7 +110,8 @@ function InnerDealer({
           key={`key_charts_29378569236593_${i}`}
           startDate={startDate}
           endDate={endDate}
-          data={e}
+          title={e.title}
+          data={e.values}
           className="w-full h-full bg-secondary"
         />
       ))}

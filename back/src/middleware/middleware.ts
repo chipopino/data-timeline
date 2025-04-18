@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from "cors";
-import mainRoutes from '@/requests/root'
+import mainRoutes from '@/requests/root';
+import chart_router from '@/requests/charts';
+import timeline_router from '@/requests/timelines';
 import logErr, { Err } from '@/debug';
 
 dotenv.config();
@@ -13,6 +15,8 @@ export const setupMiddleware = (app: Express) => {
     app.use(express.json());
 
     app.use('/', mainRoutes);
+    app.use('/', chart_router);
+    app.use('/', timeline_router);
 
     app.use((err: Error, req: Request, res: Response, next: NextFunction): void => {
         const isErr = err instanceof Err;

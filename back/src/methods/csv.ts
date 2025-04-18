@@ -11,7 +11,6 @@ export default function extractCsv(fileName: string): Promise<any[]> {
             .pipe(parse({
                 headers: true,
                 delimiter: ',',
-                trim: true,
             }))
             .on('data', (row) => {
                 rows.push(row);
@@ -27,6 +26,10 @@ export default function extractCsv(fileName: string): Promise<any[]> {
 
 export function validateRows(rows: any, schema: ZodTypeAny) {
     const r = schema.safeParse(rows);
-    if (!rows || !rows?.length) throw new Err('csvFormat');
-    if (!r.success) throw new Err('csvFormat');
+    if (!rows || !rows?.length) throw new Err('csvFormat', 'no rows');
+    if (!r.success) throw new Err(
+        'csvFormat',
+        'zod parse failed',
+        [{ title: 'zod error', msg: r.error?.errors?.slice(0, 5) }]
+    );
 }

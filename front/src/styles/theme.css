@@ -11,4 +11,5 @@
     --color-background: oklch(0.98 0.01 100);
     --color-foreground: oklch(0.10 0.02 120);
     --color-border: oklch(0.80 0.03 110);
+    --color-chart-text: oklch(0.87 0.1541 92);
 }

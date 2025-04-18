@@ -10,12 +10,12 @@ import renderDev from 'shared/renderDev';
 const timelinesMock = [
     [
         {
-            "title": "Six-Day War",
-            "date": "1967-06-05"
-        },
-        {
             "title": "Declaration of the State of Israel",
             "date": "1948-05-14"
+        },
+        {
+            "title": "Six-Day War",
+            "date": "1967-06-05"
         },
         {
             "title": "Yom Kippur War",
@@ -75,15 +75,22 @@ const timelinesMock = [
 ]
 
 const chartsMock = [
-    [
-        { d: '1948-05-14', v: 0 },
-        { d: '1963-10-06', v: 10 },
-        { d: '1972-05-13', v: -5 },
-        { d: '1995-05-13', v: 0 },
-    ]
+    {
+        title: 'test chart title',
+        values: [
+            { d: '1948-05-14', v: 0 },
+            { d: '1963-10-06', v: 10 },
+            { d: '1972-05-13', v: -5 },
+            { d: '1995-05-13', v: 0 },
+        ]
+    }
 ]
 
 renderDev(<Dealer
+    setStartDate={() => { }}
+    setEndDate={() => { }}
+    startDate={new Date('1948-05-14')}
+    endDate={new Date('2014-07-08')}
     timelines={timelinesMock}
     charts={chartsMock}
     className={cn("w-full h-full")}

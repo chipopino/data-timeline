@@ -27,4 +27,4 @@ function Select({ className, titles }: props) {
     </div>
   );
 }
-export const useSelectModal = createModal(Select);
+export const useSelectModal = createModal<props, string>(Select);

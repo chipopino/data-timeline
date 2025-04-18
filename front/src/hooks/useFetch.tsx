@@ -30,24 +30,56 @@ type fetchState = 'idle' | 'loading' | 'success' | 'error';
 // }
 
 
-export function usePost() {
+// export function usePost() {
 
+//   const [state, setState] = useState<fetchState>('idle');
+
+//   function Post(
+//     endpoint: string,
+//     data: object | File,
+//     mock?: object
+//   ) {
+//     return new Promise((res, rej) => {
+//       setState('loading');
+//       post(endpoint, data, mock).then(result => {
+//         setState('success');
+//         res(result);
+//       }).catch(err => {
+//         setState('error');
+//       })
+//     })
+//   }
+
+//   return {
+//     post: Post,
+//     setFetchState: (state: fetchState) => setState(state),
+//     isLoading: state === 'loading',
+//     isError: state === 'error',
+//     isSuccess: state === 'success',
+//     isIdle: state === 'idle',
+//   }
+// }
+
+
+
+export function usePost() {
   const [state, setState] = useState<fetchState>('idle');
-  
-  function Post(
+
+  function Post<reqT, resT>(
     endpoint: string,
-    data: object | File,
-    mock?: object
-  ) {
-    return new Promise((res, rej) => {
-      setState('loading');
-      post(endpoint, data, mock).then(result => {
+    data: reqT,
+    mock?: reqT
+  ): Promise<resT> {
+    setState('loading');
+    return post<reqT, resT>(endpoint, data, mock)
+      .then((result) => {
         setState('success');
-        res(result);
-      }).catch(err => {
-        setState('error');
+        return result;
       })
-    })
+      .catch((err) => {
+        setState('error');
+        return Promise.reject(err);
+      });
   }
 
   return {
@@ -57,5 +89,5 @@ export function usePost() {
     isError: state === 'error',
     isSuccess: state === 'success',
     isIdle: state === 'idle',
-  }
+  };
 }

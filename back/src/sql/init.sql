@@ -5,6 +5,7 @@ CREATE DATABASE timelines;
 CREATE TABLE timelines (
     id SERIAL PRIMARY KEY,
     title VARCHAR(255) NOT NULL UNIQUE,
+    description TEXT DEFAULT '',
     events JSONB NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -12,7 +13,7 @@ CREATE TABLE timelines (
 CREATE TABLE charts (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) UNIQUE NOT NULL,
-    description TEXT,
+    description TEXT DEFAULT '',
     values JSONB NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

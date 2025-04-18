@@ -44,10 +44,10 @@ export function MainModal({ modalContent, dspModal }: props) {
   );
 }
 
-export function createModal<P>(Component: FunctionComponent<P>) {
+export function createModal<P, ResolveType>(Component: FunctionComponent<P>) {
   return function useModal(props: P) {
     const { m } = useCtx();
-    return <T extends Partial<P>>(dynamicProps: T): Promise<any> =>
+    return <T extends Partial<P>>(dynamicProps: T): Promise<ResolveType> =>
       new Promise((res, rej) => {
         m.setResRej(res, rej);
         // @ts-ignore

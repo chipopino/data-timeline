@@ -9,10 +9,12 @@ const colors = {
 
 export default function logErr(
     errId: errorIds,
-    msg: { title: string, msg: any }[]
+    msg: { title: string, msg: any }[],
+    errLevel?: 'critical' | 'expected' | 'warning'
 ) {
     console.log(colors.red, 'ERROR START:', colors.default);
     console.log(colors.yellow, 'ERROR TYPE:', errId, colors.default);
+    errLevel && console.log(colors.yellow, 'ERROR LEVEL:', errLevel, colors.default);
     msg.forEach(e => {
         console.log(colors.violet, e.title, ':', colors.default, e.msg);
     })
